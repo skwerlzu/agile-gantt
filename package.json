@@ -1,10 +1,10 @@
 {
-  "name": "vue-ganttastic-tweaked",
+  "name": "agile-ganttastic",
   "version": "0.9.23",
   "description": "A simple and customizable Gantt chart component for Vue.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MorbidMiyako/vue-ganttastic-tweaked"
+    "url": "https://github.com/skwerlzu/agile-gantt"
   },
   "main": "./src/index.js",
   "scripts": {
@@ -25,7 +25,7 @@
   ],
   "author": "Marko Zunic",
   "contributors": [
-    "Bernd de Kruik <bernd-de-kruik@hotmail.com> (https://bernd-de-kruik.com/)"
+    "Jason Ulwelling <jason@agileconsulting.info> (http://agileconsulting.info)"
   ],
   "license": "MIT",
   "devDependencies": {

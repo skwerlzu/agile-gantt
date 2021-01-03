@@ -1,7 +1,9 @@
 # vue-ganttastic
-<img src="https://user-images.githubusercontent.com/28678851/77186503-45358300-6ad3-11ea-9392-7f670eb1ca8c.png" width="600"/>
+Heavily Customized version of vue-gantastic for specific use.
 
-A simple and easy-to-use Gantt chart component for Vue.js
+WILL NOT WORK OUTSIDE OF AGILE CONSULTING USE
+
+Please go to the project homepage to find a publicly working copy
 
 ## Homepage
 [Homepage of the project](https://infectoone.github.io/vue-ganttastic-homepage/#/docs)
