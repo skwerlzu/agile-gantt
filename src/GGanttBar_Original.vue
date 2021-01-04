@@ -1,19 +1,8 @@
 <template>
   <div>
-	   <v-menu
-      open-on-hover
-										  
-      :close-on-content-click="false"
-      
-										   max-width="100%"
-      offset-y
-    >
-      <template v-slot:activator="{ on, attrs }">
     <div
-		 v-on="on"
       class="g-gantt-bar"
       ref="g-gantt-bar"
-		 id="g-gantt-bar"
       :style="barStyle"
       @mouseenter.stop="onMouseenter($event)"
       @mouseleave.stop="onMouseleave($event)"
@@ -24,25 +13,8 @@
     >
       <div class="g-gantt-bar-label">
         <slot name="bar-label" :bar="bar">
-			
-			<v-container class="pa-0" style="margin: -3px 0px 0px 0px;" fluid grid-list-small>
-			<v-layout class="pa-0" row>
-			<v-flex>
-				<v-icon small style="margin-right: 5px">{{$icons.task}}</v-icon>
+				<v-icon small>mdi-calendar</v-icon>
 				<span class="caption">{{ bar.task_name || "" }}</span>
-				</v-flex>
-				<v-flex>
-				<v-icon small v-if="parseInt(barStyle.width) > 1200" style="margin-right: 5px">{{$icons.task}}</v-icon>
-				<span class="caption">{{ bar.task_name || "" }}</span>
-				</v-flex>
-				<v-flex>
-				<span class="caption" v-if="parseInt(barStyle.width) > 600">{{ bar.task_name || "" }}</span>
-				<v-icon small style="margin-right: 5px">{{$icons.task}}</v-icon>
-				</v-flex>
-			</v-layout>
-				</v-container>
-			
-				
 			
         </slot>
       </div>
@@ -55,52 +27,25 @@
           class="g-gantt-bar-handle-right"
           :style="bar.ganttBarConfig.handleStyling"
         />
-		  
       </template>
-		
     </div>
-		  </template>
 
-      <v-card >
-		 
-		  <v-card-text v-if="bar.description" v-html="bar.description" style="max-height: 150px;overflow-y: auto"></v-card-text>
-       
-
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-
-          
-          <v-btn
-            :color="$colors.primary"
-            text
-				 outlined
-				 rounded
-				 x-small
-            @click="viewTask(bar)"
-          >
-            View Task
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-menu>
-  <!--
     <transition name="fade" mode="out-in">
       <div
         v-if="!barConfig.noTooltip && (showTooltip || isDragging)"
         class="g-gantt-tooltip"
         :style="tooltipStyle"
       >
-        <p class="g-gantt-tooltip-name">{{ bar.task_name }}</p>
+        <p class="g-gantt-tooltip-name">{{ bar.label }}</p>
         <p class="g-gantt-tooltip-time">
-         {{ format(bar[barStart]) | TimeFilter }}
+          {{ bar[barStart] | TimeFilter }}
           -
           {{ bar[barEnd] | TimeFilter }}
         </p>
         <p class="g-gantt-tooltip-shift">{{ bar.shift }}</p>
+        <!-- future ed1t, add option to customize this message -->
       </div>
     </transition>
--->
   </div>
 </template>
 
@@ -111,18 +56,12 @@ export default {
   name: "GGanttBar",
 
   props: {
-	chartStart: null,
-	 chartEnd: null,
     bar: { type: Object },
     barStart: { type: String }, // property name of the bar objects that represents the start datetime
     barEnd: { type: String }, // property name of the bar objects that represents the end datetime,
     barContainer: [Object, DOMRect],
     allBarsInRow: { type: Array },
     minPerDragStep: { type: Number },
-	  categories: {
-      	 type: Array,
-		  default: ()=>{ return []}
-		}
   },
 
   inject: [
@@ -153,7 +92,6 @@ export default {
   },
 
   computed: {
-	  
     // use these computed moment objects to work with the bar's start/end dates:
     // instead of directly mutating them:
     barStartMoment: {
@@ -191,56 +129,15 @@ export default {
     },
 
     barStyle() {
-      let xStart = this.mapTimeToPosition(moment(this.barStartMoment).add(0, 'Hours'));
-      let xEnd = this.mapTimeToPosition(moment(this.barEndMoment).add(0, 'Hours'));
-		
-		let color = this.$colors.primary 
-		let repeater = null
-		if(this.bar.category.length > 1){
-			//console.log('barstyle',this.bar.category)
-			repeater = 'repeating-linear-gradient(45deg,'
-			this.bar.category.forEach((barcat,b_index)=>{
-				this.categories.forEach((cat)=>{
-					
-					if(barcat[0] == cat.name){
-						//color = cat.color
-						//console.log('barstyle match',barcat,cat.name,cat.color)
-						repeater += cat.color
-						if(b_index = (this.bar.category.length - 1)){
-							//last cat
-							repeater += ' 20px)'
-						}else if(b_index > 0){
-							repeater += ' 10px,'
-						}else{
-							repeater += ','
-						} 
-					}
-				})
-			})
-		}else if(this.bar.category.length == 1){
-			if(this.bar.category.length > 0){
-			this.categories.forEach((cat)=>{
-				if(this.bar.category[0] == cat.name){
-					repeater = cat.color
-					//console.log(cat.color)
-				}
-			})
-		} 
-		}
-		
-		let result = {
+      let xStart = this.mapTimeToPosition(this.barStartMoment);
+      let xEnd = this.mapTimeToPosition(this.barEndMoment);
+      return {
         ...(this.barConfig || {}),
         left: `${xStart}px`,
         width: `${xEnd - xStart}px`,
-        height: '20px',//`${this.ganttChartProps.rowHeight - 6}px`,
+        height: `${this.ganttChartProps.rowHeight - 6}px`,
         zIndex: this.barConfig.zIndex || (this.isDragging ? 2 : 1),
-			"background": repeater ? repeater : this.$colors.primary
-      }
-		
-	console.log(result)
-		
-		
-      return result;
+      };
     },
 
     tooltipStyle() {
@@ -260,17 +157,6 @@ export default {
   },
 
   methods: {
-	  viewTask(data){
-		this.$emit('view', data)  
-	  },
-	async catColor(data){
-		
-		this.categories.forEach((cat)=>{
-			if(data == cat.name){
-				return cat.color
-			}
-		})	
-	},
     onMouseenter(e) {
       if (this.tooltipTimeout) {
         clearTimeout(this.tooltipTimeout);
@@ -600,8 +486,7 @@ export default {
   height: 100%;
   box-sizing: border-box;
   padding: 0 8px; /* 14px is the width of the handle */ /* not anymore, settable now */
-  display: flow-root;
-    width: 100%;
+  display: flex;
   justify-content: flex-start;
   align-items: center;
 }

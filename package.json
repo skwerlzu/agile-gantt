@@ -1,19 +1,51 @@
 {
-  "name": "agile-ganttastic",
-  "version": "0.9.23",
-  "description": "A simple and customizable Gantt chart component for Vue.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/skwerlzu/agile-gantt"
+  "_from": "agile-ganttastic",
+  "_id": "agile-ganttastic@0.10.11",
+  "_inBundle": false,
+  "_location": "/agile-ganttastic",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "agile-ganttastic",
+    "name": "agile-ganttastic",
+    "escapedName": "agile-ganttastic",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
   },
-  "main": "./src/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "bili --name index --plugin vue --vue.css false"
+ 
+ 
+  "author": {
+    "name": "Marko Zunic"
+  },
+  "bugs": {
+    "url": "https://github.com/skwerlzu/agile-gantt/issues"
+  },
+  "bundleDependencies": false,
+  "contributors": [
+    {
+      "name": "Bernd de Kruik",
+      "email": "bernd-de-kruik@hotmail.com",
+      "url": "https://bernd-de-kruik.com/"
+    }
+  ],
+  "dependencies": {
+    "moment": "^2.29.1",
+	  "vuetify": "^2.4.0",
+	  "@mdi/font": "^5.8.55"
+  },
+  "deprecated": false,
+  "description": "A simple and customizable Gantt chart component for Vue.js",
+  "devDependencies": {
+    "bili": "^4.10.0",
+    "rollup-plugin-vue": "^5.1.9",
+    "vue-template-compiler": "^2.6.10"
   },
   "files": [
     "src/*"
   ],
+  "homepage": "https://github.com/skwerlzu/agile-gantt/#readme",
   "keywords": [
     "gantt",
     "chart",
@@ -23,18 +55,19 @@
     "vuejs",
     "ganttastic"
   ],
-  "author": "Marko Zunic",
-  "contributors": [
-    "Jason Ulwelling <jason@agileconsulting.info> (http://agileconsulting.info)"
-  ],
   "license": "MIT",
-  "devDependencies": {
-    "bili": "^4.10.0",
-    "rollup-plugin-vue": "^5.1.9",
-    "vue-template-compiler": "^2.6.10"
-  },
+  "main": "./src/index.js",
+  "name": "agile-ganttastic",
   "peerDependencies": {
     "moment": "^2.26.0"
   },
-  "dependencies": {}
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skwerlzu/agile-gantt.git"
+  },
+  "scripts": {
+    "build": "bili --name index --plugin vue --vue.css false",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.10.11"
 }

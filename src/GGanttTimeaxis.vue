@@ -1,5 +1,6 @@
 <template>
   <div id="g-timeaxis">
+    <!-- ed1t make this optional, along with row names -->
     <div
       class="g-timeaxis-empty-space"
       :style="{ width: rowLabelWidth, background: themeColors.secondary }"
@@ -19,7 +20,19 @@
           color: themeColors.text,
         }"
       >
-        <div>{{ dayFormatted(day) }}</div>
+        <div class="g-timeaxis-day-div">
+			{{ day ? dayFormatted(day, "D/M") : 'Loading' }}
+          <p v-if="toggleDateVisible" class="g-timeaxis-day-text">
+            {{ day ? dayFormatted(day, "dddd") : 'Loading' }}
+          </p>
+          <p v-if="toggleDateVisible" class="g-timeaxis-monthday-text">
+            {{ day ? dayFormatted(day, "MMMM Do") : 'Loading' }}
+          </p>
+          <!-- if false we want to show different styling -->
+          <p v-if="!toggleDateVisible" class="g-timeaxis-day-text-only">
+            {{ day ? dayFormatted(day, "dddd") : 'Loading' }}
+          </p>
+        </div>
         <div
           :style="{ background: themeColors.ternary, color: themeColors.text }"
         >
@@ -47,6 +60,10 @@ import moment from "moment";
 export default {
   name: "GGanttTimeaxis",
 
+  created() {
+    console.log(this.toggleDateVisible);
+  },
+
   props: {
     chartStart: String,
     chartEnd: String,
@@ -55,6 +72,7 @@ export default {
     locale: String,
     themeColors: Object,
     hoursInDay: Number,
+    toggleDateVisible: Boolean,
   },
 
   data() {
@@ -81,7 +99,11 @@ export default {
       this.axisDays = [];
       let start = moment(this.chartStart);
       let end = moment(this.chartEnd);
-      this.hourCount = Math.floor(end.diff(start, "hour", true));
+      this.hourCount = Math.floor(
+        end.diff(start, "hour", true) / this.hoursInDay
+      );
+      console.log("hourCount");
+      console.log(this.hourCount);
       while (start.isBefore(end)) {
         let hourCountOfDay =
           start.format("DD.MM.YYYY") == end.format("DD.MM.YYYY")
@@ -90,7 +112,7 @@ export default {
         let widthPercentage = (hourCountOfDay / this.hourCount) * 100;
         let endHour =
           // preferably one would also allow for distinction between years, but thats quite the edgecase and I'm lazy/feels ugly && bloated
-          start.dayOfYear() === end.dayOfYear() ? end.hour() - 1 : 23; // -1 because the last hour is not included e.g if chartEnd=04:00 the last interval we display is between 03 and 04
+          start.dayOfYear() === end.dayOfYear() ? end.hour() - 1 : 24; // -1 because the last hour is not included e.g if chartEnd=04:00 the last interval we display is between 03 and 04
         this.axisDays.push(
           this.getAxisDayObject(start, widthPercentage, endHour)
         );
@@ -116,7 +138,7 @@ export default {
           fullDatetime: datetimeMoment.format("DD.MM.YYYY HH:mm"),
         };
         axisDayObject.ganttHours.push(hour);
-        datetimeMoment.add(1, "hour");
+        datetimeMoment.add(this.hoursInDay, "hour");
       }
       return axisDayObject;
     },
@@ -140,10 +162,13 @@ export default {
         ) + "px";
     },
 
-    dayFormatted(day) {
+    dayFormatted(day, format) {
+		
+		//console.log('day',day)
       // do not display day text if the day is smaller than 12%
       return day.widthPercentage >= 12
-        ? moment(day.value).locale(this.locale).format(this.dayFormat)
+        ? // ? moment(day.value).locale(this.locale).format(this.dayFormat)
+          moment(day.value).locale(this.locale).format(format)
         : "";
     },
   },
@@ -173,8 +198,9 @@ export default {
   top: 0;
   width: 100%;
   height: 8%;
-  min-height: 75px;
-  background: white;
+  /* causes ugly white bar */
+  /* min-height: 75px; */
+  background: "#EEF1F4";
   z-index: 4;
   box-shadow: 0px 1px 3px 2px rgba(50, 50, 50, 0.5);
 }
@@ -182,7 +208,7 @@ export default {
 #g-timeaxis > .g-timeaxis-empty-space {
   width: 20%; /* this has to be as wide as .ganttRowTitle in VGanttastic.css */
   height: 100%;
-  background: #f5f5f5;
+  background: #eef1f4;
 }
 
 #g-timeaxis > .g-timeaxis-days {
@@ -219,6 +245,26 @@ export default {
   color: #212121;
 }
 
+.g-timeaxis-day-div {
+  display: flex;
+  flex-direction: column;
+}
+
+.g-timeaxis-day-text {
+  font-size: 16px;
+  margin-block-end: 0;
+}
+
+.g-timeaxis-day-text-only {
+  font-size: 16px;
+}
+
+.g-timeaxis-monthday-text {
+  font-size: 12px;
+  font-weight: lighter;
+  margin-block-start: 0;
+}
+
 .g-timeaxis-hour {
   display: flex;
   justify-content: space-between;
@@ -241,5 +287,8 @@ export default {
   width: 3px;
   background: black;
 }
+	.theme--dark #g-timeaxis-marker {
+	  background: white;
+	}
 </style>
 

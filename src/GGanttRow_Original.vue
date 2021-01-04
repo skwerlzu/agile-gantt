@@ -2,7 +2,6 @@
   <div
     class="g-gantt-row"
     ref="g-gantt-row"
-	   id="g-gantt-row"
     :style="{ height: `${$parent.rowHeight}px` }"
     v-on="$listeners"
   >
@@ -22,11 +21,8 @@
       @mouseleave="onMouseleave()"
     >
       <g-gantt-bar
-        v-for="(bar, index) in barList"
-				   v-if="inRange(bar)"
+        v-for="(bar, index) in bars"
         :key="`ganttastic_bar_${index}`" 
-		:chart-start="chartStart"
-		:chart-end="chartEnd"
         :bar="bar"
         ref="ganttBar"
         :bar-start="barStart"
@@ -34,7 +30,6 @@
         :bar-container="barContainer"
         :all-bars-in-row="bars"
         :min-per-drag-step="minPerDragStep"
-				   :categories="categories"
       >
         <template #bar-label="{ bar }">
           <slot name="bar-label" :bar="bar" />
@@ -57,18 +52,12 @@ export default {
   },
 
   props: {
-	  chartStart: null,
-	  chartEnd: null,
     label: { type: String, default: "Row" },
-    bars: { type: Array, default: () => {return []} },
+    bars: { type: Array, default: () => [] },
     barStart: { type: String, required: true }, // property name of the bar objects that represents the start datetime
     barEnd: { type: String, required: true }, // property name of the bar objects that represents the end datetime,
     highlightOnHover: Boolean,
     minPerDragStep: { type: Number, default: 1 },
-	  categories: {
-      	 type: Array,
-		  default: ()=>{ return []}
-		}
   },
 
   inject: [
@@ -86,22 +75,12 @@ export default {
   },
 
   computed: {
-	  barList(){
-		 /* console.log('barlist',{
-			  bars: this.bars ,
-			  start: this.getChartStart(), 
-			  end: this.getChartEnd()
-		  }) */
-		return this.bars  
-	  },
     rowLabelStyle() {
       return {
         width: this.ganttChartProps.rowLabelWidth,
-        height: this.ganttChartProps.rowHeight + 2,
+        height: this.ganttChartProps.rowHeight,
         background: this.$parent.themeColors.ternary,
         color: this.$parent.themeColors.text,
-		  "border-top": '1px solid #eaeaea',
-		  "border-bottom": '1px solid #eaeaea'
       };
     },
 
@@ -113,40 +92,17 @@ export default {
   },
 
   mounted() {
-	 // console.log(this.$refs)
-    this.barContainer = document.getElementById("barContainer").getBoundingClientRect();
+    this.barContainer = window.getElementById("barContainer").getBoundingClientRect();
     window.addEventListener("resize", this.onWindowResize);
   },
 
   methods: {
-	  inRange(bar){
-		  let chartStart = this.getChartStart()
-		  let chartEnd = this.getChartEnd()
-		  console.log({
-			  bar: bar,
-			  chartStart: this.getChartStart(),
-			  chartEnd: this.getChartEnd(),
-			  barStart: bar[this.barStart],
-			  barEnd: bar[this.barEnd]
-		  })
-		  let good = (moment(bar[this.barStart]).isBetween(chartStart, chartEnd) || moment(bar[this.barEnd]).isBetween(chartStart, chartEnd))
-		  console.log('good',good)
-		return good
-	  },
-	  format(data){
-		  if(!data){
-			  data = new Date()
-		  }
-		  let date = moment(data).format('YYYY-MM-DD HH:mm:ss')
-		 // console.log('format',data, date)
-		return date
-	  },
     onDragover(e) {
       e.preventDefault(); // enables dropping content on row
     },
 
     onDrop(e) {
-      let barContainer = document.getElementById("barContainer").getBoundingClientRect();
+      let barContainer = window.getElementById("barContainer").getBoundingClientRect();
       let xPos = e.clientX - barContainer.left;
       let hourDiffFromStart = (xPos / barContainer.width) * this.getHourCount();
       let time = moment(this.getChartStart()).add(hourDiffFromStart, "hours");
@@ -162,24 +118,23 @@ export default {
 
     onMouseover() {
       if (this.highlightOnHover) {
-        document.getElementById("g-gantt-row").style.backgroundColor = this.getThemeColors().hoverHighlight;
+        window.getElementById("g-gantt-row").style.backgroundColor = this.getThemeColors().hoverHighlight;
       }
     },
 
     onMouseleave() {
-      document.getElementById("g-gantt-row").style.backgroundColor = null;
+      window.getElementById("g-gantt-row").style.backgroundColor = null;
     },
 
     onWindowResize() {
       // re-initialize the barContainer DOMRect variable, which will trigger re-rendering in the gantt bars
-      this.barContainer = document.getElementById("barContainer").getBoundingClientRect();
+      this.barContainer = window.getElementById("barContainer").getBoundingClientRect();
     },
   },
 
   watch: {
-	  
     "ganttChartProps.rowLabelWidth": function () {
-      this.barContainer = document.getElementById("barContainer").getBoundingClientRect();
+      this.barContainer = window.getElementById("barContainer").getBoundingClientRect();
     },
   },
 };

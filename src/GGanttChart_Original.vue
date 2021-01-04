@@ -1,20 +1,9 @@
 <template>
   <div
     id="g-gantt-chart"
-	   :class="lightDark + ' g-gantt-chart'"
     :style="{ width: width, background: themeColors.background }"
   >
-	  <v-card :dark="dark">
-	  	<v-card-actions>
-		  <v-btn
-				 :dark="dark"
-          x-small outlined rounded
-          @click.stop="drawer = !drawer"
-        >
-          Date Range
-        </v-btn>
-		  </v-card-actions>
-	  </v-card>
+	  
     <g-gantt-timeaxis
       v-if="!hideTimeaxis"
       :chart-start="chartStart"
@@ -35,30 +24,14 @@
       :highlighted-hours="highlightedHours"
     />
 
-    <div id="g-gantt-rows-container" :chart-start="chartStart"
-      :chart-end="chartEnd" :categories="categories">
+    <div id="g-gantt-rows-container">
       <slot />
       <!-- the g-gantt-row components go here -->
     </div>
-	  
-
-		  <v-navigation-drawer
-							   :dark="dark"
-		  v-model="drawer"
-							   
-		  absolute
-		  temporary
-			width="291"
-		>
-		  <v-date-picker
-						 :dark="dark"
-			v-model="date_picker_range"
-			range
-						 :color="$colors.primary"
-		  ></v-date-picker>
-			  {{date_picker_range}}
-		</v-navigation-drawer>
-	
+	  <div>
+	  <p>chart start: {{rangeStart}}, {{chartStart}}</p>
+		 <p>chart end: {{rangeEnd}}, {{chartEnd}}</p> 
+		  </div>
   </div>
 </template>
 
@@ -85,14 +58,13 @@ export default {
   },
 
   props: {
-	dark: { type: Boolean, default: false },
     rangeStart: null,
     rangeEnd: null,
     hideTimeaxis: Boolean,
     rowLabelWidth: { type: String, default: "10%" },
     rowHeight: { type: Number, default: 40 },
     locale: { type: String, default: "en" },
-    gantt_theme: {
+    theme: {
       	 type: String,
 		  default: 'default'
 		},
@@ -103,97 +75,42 @@ export default {
     snapBackOnOverlap: { type: Boolean },
     hoursInDay: { type: Number, default: 1 },
     toggleDateVisible: { type: Boolean, default: true },
-	  categories: {
-      	 type: Array,
-		  default: ()=>{ return []}
-		}
   },
-watch:{
-	rangeStart(val){
-		//console.log('rangeStart', val)
-		let range = JSON.parse(JSON.stringify(this.date_picker_range))
-		range[0] = moment(this.rangeStart).startOf("day").format("YYYY-MM-DD")
-		
-		this.date_picker_range = range
-	},
-	rangeEnd(val){
-		//console.log('rangeEnd', val)
-		this.date_picker_range[1] = moment(this.rangeEnd).endOf("day").format("YYYY-MM-DD")
-	},
-	date_picker_range(val){
-		//console.log(val)
-	}
-},
-	 mounted () {
-	  this.init()
-    
-  },
+
   data() {
     return {
       timemarkerOffset: 0,
       movedBarsInDrag: new Set(),
-		drawer: false,
-		date_picker_range: [moment(this.rangeStart).startOf("day").format("YYYY-MM-DD"), moment(this.rangeEnd).endOf("day").format("YYYY-MM-DD")]
     };
   },
 
   computed: {
-	  lightDark(){
-		 
-		return this.dark ? 'theme--dark' : 'theme--light'  
-	  },
-	  user_info: {
-        set(val) {},
-        get() {
-          var user_info = this.$store.getters.getUser
-          if (user_info) {
-            this.user = user_info
-            this.user_id = this.user._id
-            this.$vuetify.theme.dark = this.user.profile.dark_theme
-            return user_info
-          } else {
-            this.$store.dispatch('fetchInfo')
-          }
-        }
-      },
 	  chartStart(){
 		  let date = new Date()
-		  if(this.date_picker_range[0]){
-			  date = this.date_picker_range[0]
-		  }else if(this.rangeStart){
+		  if(this.rangeStart){
 			  date = this.rangeStart
 		  }
 		return moment(date).startOf("day").format("YYYY-MM-DD HH:mm:ss")  
 	  },
 	  chartEnd(){
 		  let date = new Date()
-		  date.setDate(date.getDate() + 7)
-		  if(this.date_picker_range[1]){
-			  date = this.date_picker_range[1]
-		  }else if(this.rangeEnd){
+		  if(this.rangeEnd){
 			  date = this.rangeEnd
 		  }
-		return moment(date).endOf("day").format("YYYY-MM-DD HH:mm:ss")  
+		return moment(date).startOf("day").format("YYYY-MM-DD HH:mm:ss")  
 	  },
     hourCount() {
-      let momentChartStart = moment(this.date_picker_range[0]);
-      let momentChartEnd = moment(this.date_picker_range[1]);
+      let momentChartStart = moment(this.chartStart);
+      let momentChartEnd = moment(this.chartEnd);
       return Math.floor(momentChartEnd.diff(momentChartStart, "hour", true));
     },
 
     themeColors() {
-		let theme = this.gantt_theme
-		if(this.dark){
-			theme = 'dark'
-		}
-      return GanttasticThemeColors[theme] || this.gantt_theme;
+      return GanttasticThemeColors[this.theme] || this.theme;
     },
   },
 
   methods: {
-	  init(){
-		  this.date_picker_range = [moment(this.rangeStart).startOf("day").format("YYYY-MM-DD"), moment(this.rangeEnd).endOf("day").format("YYYY-MM-DD") ]
-	  },
     getGanttBarChildrenList() {
       let ganttBarChildren = [];
       let ganttRowChildrenList = this.$children.filter(
@@ -462,8 +379,8 @@ watch:{
   // the following values by using Vue's "inject" option:
   provide() {
     return {
-      getChartStart: () => {return this.chartStart},
-      getChartEnd: () => {return this.chartEnd},
+      getChartStart: () => this.chartStart,
+      getChartEnd: () => this.chartEnd,
       getHourCount: () => this.hourCount,
       ganttChartProps: this.$props,
       getThemeColors: () => this.themeColors,
@@ -494,7 +411,7 @@ watch:{
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  max-height: calc(100vh - 135px);
+  padding-bottom: 23px;
 }
 
 #g-gantt-chart >>> * {
