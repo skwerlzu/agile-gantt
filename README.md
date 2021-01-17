@@ -1,122 +1,362 @@
-# vue-ganttastic
-Heavily Customized version of vue-gantastic for specific use.
+<h1>Gantt-elastic - Javascript Gantt Chart (editable, responsive)</h1>
+<h2>Javascript Gantt Chart for vue, jquery, vanilla js and other frameworks</h2>
 
-WILL NOT WORK OUTSIDE OF AGILE CONSULTING USE
+<br>
+<h3>Project moved as next major version to <a href="https://github.com/neuronetio/gantt-schedule-timeline-calendar">gantt-schedule-timeline-calendar</a></h3><br><br>
 
-Please go to the project homepage to find a publicly working copy
+<h2><a href="https://neuronet.io/gantt-elastic/" target="_blank">Gantt-elastic demo here</a></h2>
 
-## Homepage
-[Homepage of the project](https://infectoone.github.io/vue-ganttastic-homepage/#/docs)
+![preview img](https://github.com/neuronetio/gantt-elastic/raw/master/gantt-elastic.jpg)
+![preview gif](https://github.com/neuronetio/gantt-elastic/raw/master/gantt-elastic.gif)
+![preview gif](https://github.com/neuronetio/gantt-elastic/raw/master/grab-scroll.gif)
 
-## Installation
-You can install and use Vue-Ganttastic in your project using <kbd>npm</kbd>:
-```
-npm install vue-ganttastic
-```
+## Gantt-elastic
 
-[Moment.js](https://momentjs.com/) is a peer-dependency of Vue-Ganttastic. In order for Vue-Ganttastic to work correctly, you need to install it in your project:
-```
-npm install moment
-```
+is a vue component but it could be used in other frameworks or even with jQuery (vue is kind of elastic and lightweight framework).
 
-## Basic Usage
-Import the components <code>GGanttChart</code> and <code>GGanttRow</code>.  
-Use <code>g-gantt-chart</code> in your template, pass the desired chart start and chart end time as props (<code>chart-start</code> and <code>chart-end</code>) and add <code>g-gantt-row</code>s
-to the default template slot.  
-Pass an array containing your bar objects to every row using the <code>bars</code> prop, while specifying the name of the properties in your bar objects that stand for the bar start and bar end time using the props <code>bar-start</code> and <code>bar-end</code>  
+[WIKI](https://github.com/neuronetio/gantt-elastic/wiki)
 
-For more detailed information, such as how to style the bars or additional configuration options, please refer to the [docs](https://infectoone.github.io/vue-ganttastic-homepage/#/docs) on the project's homepage (coming soon).
+[Vue Example](https://github.com/neuronetio/vue-gantt-elastic)
 
-The following code showcases a simple usage example in a .vue SFC (Single File Component)
+### Installation
+
+`npm install --save gantt-elastic` or download zip from github / clone repo
+
+and if you want default header
+
+`npm install --save gantt-elastic-header`
+
+### Usage
+
 ```html
-<template>
-  ...
+<!DOCTYPE html>
+<html charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>GanttElastic editor demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs"></script>
 
-  <g-gantt-chart
-    :chart-start="myChartStart"
-    :chart-end="myChartEnd"
-  >
-    <g-gantt-row
-      v-for="row in rows"
-      :key="row.label"
-      :label="row.label"
-      :bars="row.bars"
-      bar-start="myStart"
-      bar-end="myEnd"
-    />
-  </g-gantt-chart>
+    <script src="https://unpkg.com/gantt-elastic/dist/GanttElastic.umd.js"></script>
+    <script src="https://unpkg.com/gantt-elastic-header/dist/Header.umd.js"></script>
+  </head>
 
-  ...
-</template>
+  <body>
+    <div style="width:100%;height:100%">
+      <div id="app" v-if="!destroy">
+        <gantt-elastic :tasks="tasks" :options="options" :dynamic-style="dynamicStyle">
+          <gantt-header slot="header"></gantt-header>
+          <gantt-footer slot="footer"></gantt-footer>
+        </gantt-elastic>
+      </div>
+    </div>
 
-<script>
+    <script>
+      // just helper to get current dates
+      function getDate(hours) {
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth();
+        const currentDay = currentDate.getDate();
+        const timeStamp = new Date(currentYear, currentMonth, currentDay, 0, 0, 0).getTime();
+        return new Date(timeStamp + hours * 60 * 60 * 1000).getTime();
+      }
 
-import {GGanttChart, GGanttRow} from 'vue-ganttastic'
-
-export default {
-
-  ...
-
-  components:{
-    GGanttChart,
-    GGanttRow
-  },
-
-  data(){
-    return {
-      myChartStart: "2020-03-01 00:00",
-      myChartEnd: "2020-03-03 00:00",
-      rows: [
+      let tasks = [
         {
-          label: "My row #1",
-          bars: [
-            {
-              myStart: "2020-03-01 12:10",
-              myEnd: "2020-03-01 16:35"
-            }
-          ]
+          id: 1,
+          label: 'Make some noise',
+          user:
+            '<a href="https://www.google.com/search?q=John+Doe" target="_blank" style="color:#0077c0;">John Doe</a>',
+          start: getDate(-24 * 5),
+          duration: 15 * 24 * 60 * 60 * 1000,
+          progress: 85,
+          type: 'project',
+          //collapsed: true,
         },
         {
-          label: "My row #2",
-          bars: [
+          id: 2,
+          label: 'With great power comes great responsibility',
+          user:
+            '<a href="https://www.google.com/search?q=Peter+Parker" target="_blank" style="color:#0077c0;">Peter Parker</a>',
+          parentId: 1,
+          start: getDate(-24 * 4),
+          duration: 4 * 24 * 60 * 60 * 1000,
+          progress: 50,
+          type: 'milestone',
+          collapsed: true,
+          style: {
+            base: {
+              fill: '#1EBC61',
+              stroke: '#0EAC51',
+            },
+            /*'tree-row-bar': {
+              fill: '#1EBC61',
+              stroke: '#0EAC51'
+            },
+            'tree-row-bar-polygon': {
+              stroke: '#0EAC51'
+            }*/
+          },
+        },
+        {
+          id: 3,
+          label: 'Courage is being scared to death, but saddling up anyway.',
+          user:
+            '<a href="https://www.google.com/search?q=John+Wayne" target="_blank" style="color:#0077c0;">John Wayne</a>',
+          parentId: 2,
+          start: getDate(-24 * 3),
+          duration: 2 * 24 * 60 * 60 * 1000,
+          progress: 100,
+          type: 'task',
+        },
+        {
+          id: 4,
+          label: 'Put that toy AWAY!',
+          user:
+            '<a href="https://www.google.com/search?q=Clark+Kent" target="_blank" style="color:#0077c0;">Clark Kent</a>',
+          start: getDate(-24 * 2),
+          duration: 2 * 24 * 60 * 60 * 1000,
+          progress: 50,
+          type: 'task',
+          dependentOn: [3],
+        },
+      ];
+
+      let options = {
+        maxRows: 100,
+        maxHeight: 300,
+        title: {
+          label: 'Your project title as html (link or whatever...)',
+          html: false,
+        },
+        row: {
+          height: 24,
+        },
+        calendar: {
+          hour: {
+            display: false,
+          },
+        },
+        chart: {
+          progress: {
+            bar: false,
+          },
+          expander: {
+            display: true,
+          },
+        },
+        taskList: {
+          expander: {
+            straight: false,
+          },
+          columns: [
             {
-              myStart: "2020-03-02 01:00",
-              myEnd: "2020-03-02 12:00"
+              id: 1,
+              label: 'ID',
+              value: 'id',
+              width: 40,
             },
             {
-              myStart: "2020-03-02 13:00",
-              myEnd: "2020-03-02 22:00"
-            }
-          ]
-        }
-      ]
-    }
-  }
+              id: 2,
+              label: 'Description',
+              value: 'label',
+              width: 200,
+              expander: true,
+              html: true,
+              events: {
+                click({ data, column }) {
+                  alert('description clicked!\n' + data.label);
+                },
+              },
+            },
+            {
+              id: 3,
+              label: 'Assigned to',
+              value: 'user',
+              width: 130,
+              html: true,
+            },
+            {
+              id: 3,
+              label: 'Start',
+              value: (task) => dayjs(task.start).format('YYYY-MM-DD'),
+              width: 78,
+            },
+            {
+              id: 4,
+              label: 'Type',
+              value: 'type',
+              width: 68,
+            },
+            {
+              id: 5,
+              label: '%',
+              value: 'progress',
+              width: 35,
+              style: {
+                'task-list-header-label': {
+                  'text-align': 'center',
+                  width: '100%',
+                },
+                'task-list-item-value-container': {
+                  'text-align': 'center',
+                  width: '100%',
+                },
+              },
+            },
+          ],
+        },
+        /*locale:{
+          name: 'pl', // name String
+          weekdays: 'Poniedziałek_Wtorek_Środa_Czwartek_Piątek_Sobota_Niedziela'.split('_'), // weekdays Array
+          weekdaysShort: 'Pon_Wto_Śro_Czw_Pią_Sob_Nie'.split('_'), // OPTIONAL, short weekdays Array, use first three letters if not provided
+          weekdaysMin: 'Pn_Wt_Śr_Cz_Pt_So_Ni'.split('_'), // OPTIONAL, min weekdays Array, use first two letters if not provided
+          months: 'Styczeń_Luty_Marzec_Kwiecień_Maj_Czerwiec_Lipiec_Sierpień_Wrzesień_Październik_Listopad_Grudzień'.split('_'), // months Array
+          monthsShort: 'Sty_Lut_Mar_Kwi_Maj_Cze_Lip_Sie_Wrz_Paź_Lis_Gru'.split('_'), // OPTIONAL, short months Array, use first three letters if not provided
+          ordinal: n => `${n}`, // ordinal Function (number) => return number + output
+          relativeTime: { // relative time format strings, keep %s %d as the same
+            future: 'za %s', // e.g. in 2 hours, %s been replaced with 2hours
+            past: '%s temu',
+            s: 'kilka sekund',
+            m: 'minutę',
+            mm: '%d minut',
+            h: 'godzinę',
+            hh: '%d godzin', // e.g. 2 hours, %d been replaced with 2
+            d: 'dzień',
+            dd: '%d dni',
+            M: 'miesiąc',
+            MM: '%d miesięcy',
+            y: 'rok',
+            yy: '%d lat'
+          }
+       }*/
+      };
 
-  ...
+      // create instance
+      const app = new Vue({
+        components: {
+          'gantt-header': Header,
+          'gantt-elastic': GanttElastic,
+          'gantt-footer': {
+            template: `<span>this is a footer</span>`,
+          },
+        },
+        data: {
+          tasks: tasks.map((task) => Object.assign({}, task)),
+          options,
+          dynamicStyle: {
+            'task-list-header-label': {
+              'font-weight': 'bold',
+            },
+          },
+          destroy: false,
+        },
+      });
 
-}
-</script>
+      // gantt state which will be updated in realtime
+      let ganttState, ganttInstance;
 
+      // listen to 'gantt-elastic.ready' or 'gantt-elastic.mounted' event
+      // to get the gantt state for real time modification
+      app.$on('gantt-elastic-ready', (ganttElasticInstance) => {
+        ganttInstance = ganttElasticInstance;
+
+        ganttInstance.$on('tasks-changed', (tasks) => {
+          app.tasks = tasks;
+        });
+        ganttInstance.$on('options-changed', (options) => {
+          app.options = options;
+        });
+        ganttInstance.$on('dynamic-style-changed', (style) => {
+          app.dynamicStyle = style;
+        });
+
+        ganttInstance.$on('chart-task-mouseenter', ({ data, event }) => {
+          console.log('task mouse enter', { data, event });
+        });
+        ganttInstance.$on('updated', () => {
+          //console.log('gantt view was updated');
+        });
+        ganttInstance.$on('destroyed', () => {
+          //console.log('gantt was destroyed');
+        });
+        ganttInstance.$on('times-timeZoom-updated', () => {
+          console.log('time zoom changed');
+        });
+        ganttInstance.$on('taskList-task-click', ({ event, data, column }) => {
+          console.log('task list clicked! (task)', { data, column });
+        });
+      });
+
+      // mount gantt to DOM
+      app.$mount('#app');
+    </script>
+  </body>
+</html>
 ```
 
-## Contributing
-Pull requests are warmly welcomed, while every major change or proposal ought to be discussed in an issue first. As the project is still new, I will gladly accept suggestions, proposals, contributions etc.
+### gantt-elastic as vue component
 
-### Contributing - How to run the project
-  1. Clone the project
-  2. Install the Vue CLI service, if you don't already have it installed:
-      ```
-        npm install -g @vue/cli
-        npm install -g @vue/cli-service-global
-      ```
-  3. <code>Playground.vue</code> is a dedicated Vue SFC where all    Vue-Ganttastic features can be
-     played around with and tested out. Get it running using:
-      ```
-        vue serve src/Playground.vue
-      ```
-## Dependencies
-[Moment.js](https://momentjs.com/)
+Take a look at the `vue.html` inside [examples folder](https://github.com/neuronetio/gantt-elastic/tree/master/examples) file to see how you could add gantt-elastic inside `<script>` tag along with the Vue framework
 
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
+Demo project: https://github.com/neuronetio/vue-gantt-elastic
+
+You can also import gantt-elastic as compiled js component in commonjs or umd format ([examples](https://github.com/neuronetio/gantt-elastic/tree/master/examples) folder) or just grab GanttElastic.vue from src directory and add to your existing vue project.
+
+```javascript
+import Vue from 'vue';
+import GanttElastic from "gantt-elastic";
+import Header from "gantt-elastic-header"; // if you want standard header (npm i -s gantt-elastic-header)
+new Vue({
+  el:'#gantt',
+  template:`<gantt-elastic :tasks="tasks" :options="options">
+    <gantt-elastic-header slot="header"></gantt-elastic-header>
+    <gantt-elastic-footer slot="footer"></gantt-elastic-footer>
+  </gantt-elastic>`,
+  components: {
+    ganttElasticHeader: {template:`<span>your header</span>`}, // or Header
+    ganttElastic: GanttElastic
+    ganttElasticFooter: {template:`<span>your footer</span>`},
+  },
+  data() {
+    return {
+      tasks: tasks,
+      options: options
+    };
+  }
+});
+```
+
+or
+
+```javascript
+import Vue from 'vue';
+import App from './App.vue'; // your app that uses gantt-elastic from 'gantt-elastic/src/GanttElastic.vue'
+
+new Vue({
+  el: '#app',
+  render: (h) => h(App),
+});
+```
+
+### For webpack usage (pure javascript, inside other frameworks or Vue App/Component)
+
+Take a look at this demo project: https://github.com/neuronetio/gantt-elastic-webpack for other bundlers use umd or commonjs from dist folder.
+
+```javascript
+import GanttElastic from 'gantt-elastic/dist/GantElastic.umd.js';
+import GanttElastic from 'gantt-elastic/dist/GantElastic.common.js'; // same as import GanttElastic from 'gantt-elastic';
+import GanttElastic from 'gantt-elastic/src/GantElastic.vue'; // if you want vue component directly without compilation - look above
+// and the same with require
+const GanttElastic = require('gantt-elastic/dist/GantElastic.common.js');
+```
+
+### uglifyjs
+
+If you are using uglifyjs in your project be sure to have es6 compatible version like [uglify-es](https://www.npmjs.com/package/uglify-es)
+
+### Licensce
+
+MIT

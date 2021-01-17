@@ -1,73 +1,75 @@
 {
-  "_from": "agile-ganttastic",
-  "_id": "agile-ganttastic@0.10.11",
-  "_inBundle": false,
-  "_location": "/agile-ganttastic",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "tag",
-    "registry": true,
-    "raw": "agile-ganttastic",
-    "name": "agile-ganttastic",
-    "escapedName": "agile-ganttastic",
-    "rawSpec": "",
-    "saveSpec": null,
-    "fetchSpec": "latest"
-  },
- 
- 
-  "author": {
-    "name": "Marko Zunic"
-  },
-  "bugs": {
-    "url": "https://github.com/skwerlzu/agile-gantt/issues"
-  },
-  "bundleDependencies": false,
-  "contributors": [
-    {
-      "name": "Bernd de Kruik",
-      "email": "bernd-de-kruik@hotmail.com",
-      "url": "https://bernd-de-kruik.com/"
-    }
-  ],
+  "name": "agile-gantt",
+  "version": "1.0.12",
+  "description": "Gantt chart. Custom development, will not work outside intended project.",
+  "main": "src/AgileGantt.vue",
   "dependencies": {
-    "moment": "^2.29.1",
-	  "vuetify": "^2.4.0",
-	  "@mdi/font": "^5.8.55"
+    "dayjs": "^1.10.3",
+    "resize-observer-polyfill": "^1.5.1",
+    "vue": "^2.6.12"
   },
-  "deprecated": false,
-  "description": "A simple and customizable Gantt chart component for Vue.js",
   "devDependencies": {
-    "bili": "^4.10.0",
-    "rollup-plugin-vue": "^5.1.9",
-    "vue-template-compiler": "^2.6.10"
+    "@types/chai": "^4.2.14",
+    "@types/cypress": "^1.1.3",
+    "@types/mocha": "^5.2.7",
+    "@vue/cli-plugin-eslint": "^3.12.1",
+    "@vue/cli-service": "^3.12.1",
+    "@vue/eslint-config-prettier": "^4.0.1",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^24.9.0",
+    "babel-preset-env": "^1.7.0",
+    "css-loader": "^1.0.1",
+    "cypress": "^3.8.3",
+    "eslint": "^5.16.0",
+    "eslint-plugin-cypress": "^2.11.2",
+    "vue-loader": "^15.9.6",
+    "vue-slider-component": "^3.2.11",
+    "vue-switches": "^2.0.1",
+    "vue-template-compiler": "^2.6.12",
+    "webpack": "^4.39.3",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.2"
   },
-  "files": [
-    "src/*"
-  ],
-  "homepage": "https://github.com/skwerlzu/agile-gantt/#readme",
-  "keywords": [
-    "gantt",
-    "chart",
-    "bar",
-    "diagram",
-    "vue",
-    "vuejs",
-    "ganttastic"
-  ],
-  "license": "MIT",
-  "main": "./src/index.js",
-  "name": "agile-ganttastic",
-  "peerDependencies": {
-    "moment": "^2.26.0"
+  "scripts": {
+    "test": "npx cypress run --browser chrome",
+    "build": "webpack",
+    "dev": "webpack --config webpack.dev.js --watch"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/skwerlzu/agile-gantt.git"
+    "url": "git+https://github.com/skwerlzu/agile-gantt"
   },
-  "scripts": {
-    "build": "bili --name index --plugin vue --vue.css false",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "keywords": [
+    "gantt",
+    "gantt js",
+    "gantt chart",
+    "gantt elastic",
+    "javascript gantt",
+    "javascript gantt chart",
+    "jQuery gantt",
+    "vue gantt",
+    "js gantt",
+    "gantt-chart",
+    "responsive",
+    "vue",
+    "vue-gantt",
+    "javascript gantt",
+    "project gantt",
+    "project manger",
+    "responsive gantt",
+    "gantt component",
+    "javascript gantt",
+    "project",
+    "task"
+  ],
+  "author": "Jason Ulwelling <skwerlzu@gmail.com> ",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/skwerlzu/agile-gantt/issues"
   },
-  "version": "0.10.11"
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  }
 }
