@@ -29,6 +29,24 @@
         >
           {{ value }}
         </div>
+		  <div
+          v-else-if="column.value == 'user'"
+          class=""
+          :style="valueStyle + ';overflow: visible'"
+          @click="emitEvent('click', $event)"
+          @mouseenter="emitEvent('mouseenter', $event)"
+          @mouseover="emitEvent('mouseover', $event)"
+          @mouseout="emitEvent('mouseout', $event)"
+          @mousemove="emitEvent('mousemove', $event)"
+          @mousedown="emitEvent('mousedown', $event)"
+          @mouseup="emitEvent('mouseup', $event)"
+          @mousewheel="emitEvent('mousewheel', $event)"
+          @touchstart="emitEvent('touchstart', $event)"
+          @touchmove="emitEvent('touchmove', $event)"
+          @touchend="emitEvent('touchend', $event)"
+        >
+          <UserAvatar v-for="user in value" :key="column.label + '-' + user"  style="display: inline" :tile="true"  :user_data="user" :show_menu="true" :params="{size: 20}" />
+        </div>
         <div
           v-else
           class="agile-gantt__task-list-item-value"
@@ -59,6 +77,9 @@ export default {
   data() {
     return {};
   },
+	watch:{
+		
+	},
   methods: {
     /**
      * Emit event
@@ -102,6 +123,7 @@ export default {
       return {
         ...this.root.style['task-list-item-column'],
         ...this.column.style['task-list-item-column'],
+		  overflow: this.column.avatar ? 'visible' : 'hidden',
         width: this.column.finalWidth + 'px',
         height: this.column.height + 'px'
       };
@@ -110,14 +132,17 @@ export default {
     wrapperStyle() {
       return {
         ...this.root.style['task-list-item-value-wrapper'],
-        ...this.column.style['task-list-item-value-wrapper']
+        ...this.column.style['task-list-item-value-wrapper'],
+		  overflow: this.column.avatar ? 'visible' : 'hidden'
       };
     },
 
     containerStyle() {
       return {
         ...this.root.style['task-list-item-value-container'],
-        ...this.column.style['task-list-item-value-container']
+        ...this.column.style['task-list-item-value-container'],
+		  overflow: this.column.avatar ? 'visible' : 'hidden',
+		  padding: this.column.avatar ? '0px 5px' : ''
       };
     },
 

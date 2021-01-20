@@ -30,6 +30,31 @@
     >
       <expander :tasks="[task]" :options="root.state.options.chart.expander" type="chart"></expander>
     </foreignObject>
+	  <foreignObject
+      class=""
+    	style="overflow: visible"
+      :x="task.x + 10 "
+      :y="task.y - 1"
+      :width="task.width > 300 ? task.width : 300"
+      :height="26"
+				 
+    >
+	<div class="gantt-test">  
+			
+		<span v-for="user in task.user"  :key="task.id+'chart-avatar'"><UserAvatar   style="display: inline" :tile="true"  :user_data="user" :show_menu="false" :params="{size: 20, badge: false}" /></span>
+			<span style="max-width: 150px"><v-chip
+      class="text-truncate"
+      dark
+      color="#3333336e"
+						  style="border-color: rgb(255 255 255);
+    border: solid 1px;"
+						  small
+    >
+      
+      {{task.label}}
+    </v-chip></span> 
+		</div>
+    </foreignObject>
     <svg
       class="agile-gantt__chart-row-bar agile-gantt__chart-row-milestone"
       :style="{ ...root.style['chart-row-bar'], ...root.style['chart-row-milestone'], ...task.style['chart-row-bar'] }"
@@ -68,7 +93,7 @@
       ></polygon>
       <progress-bar :task="task" :clip-path="'url(#' + clipPathId + ')'"></progress-bar>
     </svg>
-    <chart-text :task="task" v-if="root.state.options.chart.text.display"></chart-text>
+    <!-- <chart-text :task="task" v-if="root.state.options.chart.text.display"></chart-text> -->
   </g>
 </template>
 

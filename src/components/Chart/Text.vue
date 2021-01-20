@@ -43,6 +43,7 @@
           v-html="task.label"
         ></div>
       </div>
+		
     </foreignObject>
   </svg>
 </template>

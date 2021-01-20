@@ -15,6 +15,11 @@
 </template>
 
 <script>
+	import Vue from 'vue';
+	import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+Vue.use(Vuetify)
+
 import VueInstance from 'vue';
 import dayjs from 'dayjs';
 import MainView from './components/MainView.vue';

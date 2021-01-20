@@ -7,6 +7,14 @@
 
 export default {
   computed: {
+	  zoom: {
+        set(val) {
+			this.root.state.options.times.timeZoom = val
+		},
+        get() {
+          return this.root.state.options.times.timeZoom
+        }
+      },
     /**
      * Get view box
      *
@@ -45,7 +53,9 @@ export default {
      */
     emitEvent(eventName, event) {
       if (!this.root.state.options.scroll.scrolling) {
+		   
         this.root.$emit(`chart-${this.task.type}-${eventName}`, { event, data: this.task });
+		this.root.$emit(`action`, { event,task_type: this.task.type, action: eventName, data: this.task });
       }
     }
   }

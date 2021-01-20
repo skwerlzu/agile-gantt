@@ -29,6 +29,7 @@
         />
       </pattern>
     </defs>
+	
     <rect
       v-if="root.state.options.chart.progress.bar"
       class="agile-gantt__chart-row-progress-bar-solid"
@@ -37,7 +38,9 @@
       y="0"
       :width="getProgressWidth"
     ></rect>
+
     <g v-if="root.state.options.chart.progress.pattern">
+	
       <rect
         class="agile-gantt__chart-row-progress-bar-pattern"
         :style="{ ...root.style['chart-row-progress-bar-pattern'], ...task.style['chart-row-progress-bar-pattern'] }"
@@ -46,6 +49,7 @@
         :width="100 - task.progress + '%'"
         height="100%"
       ></rect>
+
       <path
         class="agile-gantt__chart-row-progress-bar-outline"
         :style="{

@@ -21,8 +21,8 @@
         :style="{ ...root.style[getClassPrefix(false) + '-border'], ...borderStyle }"
         :x="border"
         :y="border"
-        :width="options.size - border * 2"
-        :height="options.size - border * 2"
+        :width="options.size ? options.size - border * 2 : 4"
+        :height="options.size ? options.size - border * 2 : 4"
         rx="2"
         ry="2"
       ></rect>
@@ -108,6 +108,12 @@ export default {
     }
   },
   methods: {
+	   emitEvent(eventName, event) {
+		//   console.log('time.zoom',this.root.state.options.times.timeZoom)
+      if (!this.root.state.options.scroll.scrolling) {
+		this.root.$emit(`action`, { event,task_type: 'expander', action: eventName, data: this.task });
+      }
+    },
     /**
      * Get specific class prefix
      *
@@ -124,8 +130,10 @@ export default {
         return;
       }
       const collapsed = !this.collapsed;
+		this.root.$emit(`action`, { event: 'click',task_type: 'expander', action: 'collapse', data: collapsed });
       this.tasks.forEach(task => {
         task.collapsed = collapsed;
+		  
       });
     }
   }

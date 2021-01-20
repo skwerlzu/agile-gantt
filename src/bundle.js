@@ -5,8 +5,12 @@
  * @package AgileGanttStandalone
  */
 import Vue from 'vue';
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+Vue.use(Vuetify)
 import { mergeDeep } from './AgileGantt.vue';
 import AgileGanttStandalone from './AgileGantt.standalone.vue';
+
 
 window.AgileGantt = {
   component: AgileGanttStandalone,

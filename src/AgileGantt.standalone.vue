@@ -13,7 +13,7 @@
   </agile-gantt>
 </template>
 <script>
-import Vue from 'vue';
+
 import AgileGantt from './AgileGantt.vue';
 export default {
   name: 'AgileGanttStandalone',

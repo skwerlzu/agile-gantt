@@ -30,6 +30,31 @@
     >
       <expander :tasks="[task]" :options="root.state.options.chart.expander" type="chart"></expander>
     </foreignObject>
+	  <foreignObject
+      class=""
+    	style="overflow: visible"
+      :x="task.x + 10 "
+      :y="task.y - 4"
+      :width="task.width > 300 ? task.width : 300"
+      :height="26"
+				 
+    >
+	<div class="gantt-test">  
+		
+			<span style="max-width: 150px"><v-chip
+      class="text-truncate"
+						  dark
+      color="#3333336e"
+						  style="border-color: rgb(255 255 255);
+    border: solid 1px;"
+						  
+						  x-small
+    >
+      
+      {{task.label}}
+    </v-chip></span> 
+		</div>
+    </foreignObject>
     <svg
       class="agile-gantt__chart-row-bar agile-gantt__chart-row-project"
       :style="{ ...root.style['chart-row-bar'], ...root.style['chart-row-project'], ...task.style['chart-row-bar'] }"
@@ -68,7 +93,7 @@
       ></path>
       <progress-bar :task="task" :clip-path="'url(#' + clipPathId + ')'"></progress-bar>
     </svg>
-    <chart-text :task="task" v-if="root.state.options.chart.text.display"></chart-text>
+   <!--  <chart-text :task="task" v-if="root.state.options.chart.text.display"></chart-text> -->
   </g>
 </template>
 
