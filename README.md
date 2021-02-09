@@ -1,4 +1,9 @@
 ```bash
+# Basic Node.JS installation
+meteor npm install agile-gantt@https://github.com/skwerlzu/agile-gantt.git
+```
+
+```bash
 # Additional typescript definitions
 "agile-gantt": "git+https://github.com/skwerlzu/agile-gantt.git" 
 ```
