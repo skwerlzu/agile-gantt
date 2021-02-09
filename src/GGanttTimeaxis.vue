@@ -114,8 +114,8 @@ export default {
       this.hourCount = Math.floor(
         end.diff(start, "hour", true) / this.hoursInDay
       );
-      console.log("hourCount");
-      console.log(this.hourCount);
+     // console.log("hourCount");
+      //console.log(this.hourCount);
       while (start.isBefore(end)) {
         let hourCountOfDay =
           start.format("DD.MM.YYYY") == end.format("DD.MM.YYYY")

@@ -12,7 +12,7 @@
     :style="{ ...root.style['chart-row-text-wrapper'] }"
     :x="task.x + task.width + root.state.options.chart.text.offset"
     :y="task.y - root.state.options.chart.grid.horizontal.gap"
-    :width="getWidth"
+    :width="isNaN(getWidth) ? 50 : getWidth"
     :height="getHeight"
   >
     <foreignObject x="0" y="0" width="100%" :height="getHeight">

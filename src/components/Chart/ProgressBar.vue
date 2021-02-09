@@ -31,7 +31,7 @@
     </defs>
 	
     <rect
-      v-if="root.state.options.chart.progress.bar"
+      v-if="root.state.options.chart.progress.bar && getProgressWidth"
       class="agile-gantt__chart-row-progress-bar-solid"
       :style="{ ...root.style['chart-row-progress-bar-solid'], ...task.style['chart-row-progress-bar-solid'] }"
       x="0"
@@ -42,11 +42,12 @@
     <g v-if="root.state.options.chart.progress.pattern">
 	
       <rect
+		
         class="agile-gantt__chart-row-progress-bar-pattern"
         :style="{ ...root.style['chart-row-progress-bar-pattern'], ...task.style['chart-row-progress-bar-pattern'] }"
         :x="getProgressWidth"
         y="0"
-        :width="100 - task.progress + '%'"
+        :width="100 - (task.progress ? task.progress : 100) + '%'"
         height="100%"
       ></rect>
 
@@ -79,7 +80,13 @@ export default {
      * @returns {string}
      */
     getProgressWidth() {
-      return this.task.progress + '%';
+		let progress = this.task.progress
+		if(!this.task || !this.task.progress){
+			progress = 1
+			console.warn('task progress',this.task,progress)
+		}
+		
+      return progress
     },
 
     /**

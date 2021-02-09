@@ -45,7 +45,7 @@
           @touchmove="emitEvent('touchmove', $event)"
           @touchend="emitEvent('touchend', $event)"
         >
-          <UserAvatar v-for="user in value" :key="column.label + '-' + user"  style="display: inline" :tile="true"  :user_data="user" :show_menu="true" :params="{size: 20}" />
+          <UserAvatar v-for="user in value" :key="column.label + '-' + user"   style="display: inline"   :user_data="user" :show_menu="true" :params="{size: 20}" />
         </div>
         <div
           v-else

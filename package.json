@@ -1,13 +1,42 @@
 {
-  "name": "agile-gantt",
-  "version": "1.0.12",
-  "description": "Gantt chart. Custom development, will not work outside intended project.",
-  "main": "src/AgileGantt.vue",
+  "_from": "git+https://github.com/skwerlzu/agile-gantt.git",
+  "_id": "agile-gantt@1.0.12",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/agile-gantt",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "agile-gantt@https://github.com/skwerlzu/agile-gantt.git",
+    "name": "agile-gantt",
+    "escapedName": "agile-gantt",
+    "rawSpec": "https://github.com/skwerlzu/agile-gantt.git",
+    "saveSpec": "git+https://github.com/skwerlzu/agile-gantt.git",
+    "fetchSpec": "https://github.com/skwerlzu/agile-gantt.git",
+    "gitCommittish": null
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "git+https://github.com/skwerlzu/agile-gantt.git#806ab6da020a824dd9937472a6eb5e94c88ee4d4",
+  "_spec": "agile-gantt@https://github.com/skwerlzu/agile-gantt.git",
+  "_where": "/home/agile/clients/agile/project-manager/jason-rework",
+  "author": {
+    "name": "Jason Ulwelling",
+    "email": "skwerlzu@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/skwerlzu/agile-gantt/issues"
+  },
+  "bundleDependencies": false,
   "dependencies": {
     "dayjs": "^1.10.3",
     "resize-observer-polyfill": "^1.5.1",
     "vue": "^2.6.12"
   },
+  "deprecated": false,
+  "description": "Gantt chart. Custom development, will not work outside intended project.",
   "devDependencies": {
     "@types/chai": "^4.2.14",
     "@types/cypress": "^1.1.3",
@@ -22,25 +51,15 @@
     "cypress": "^3.8.3",
     "eslint": "^5.16.0",
     "eslint-plugin-cypress": "^2.11.2",
-    "@mdi/font": "^5.8.55",
     "vue-loader": "^15.9.6",
     "vue-slider-component": "^3.2.11",
     "vue-switches": "^2.0.1",
     "vue-template-compiler": "^2.6.12",
-    "vuetify": "^2.4.0",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.2"
   },
-  "scripts": {
-    "test": "npx cypress run --browser chrome",
-    "build": "webpack",
-    "dev": "webpack --config webpack.dev.js --watch"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/skwerlzu/agile-gantt"
-  },
+  "homepage": "https://github.com/skwerlzu/agile-gantt#readme",
   "keywords": [
     "gantt",
     "gantt js",
@@ -64,14 +83,22 @@
     "project",
     "task"
   ],
-  "author": "Jason Ulwelling <skwerlzu@gmail.com> ",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/skwerlzu/agile-gantt/issues"
-  },
+  "main": "src/AgileGantt.vue",
+  "name": "agile-gantt",
   "postcss": {
     "plugins": {
       "autoprefixer": {}
     }
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skwerlzu/agile-gantt.git"
+  },
+  "scripts": {
+    "build": "webpack",
+    "dev": "webpack --config webpack.dev.js --watch",
+    "test": "npx cypress run --browser chrome"
+  },
+  "version": "1.0.12"
 }

@@ -241,7 +241,7 @@ export default {
 			"background": repeater ? repeater : this.$colors.primary
       }
 		
-	console.log(result)
+	//console.log(result)
 		
 		
       return result;

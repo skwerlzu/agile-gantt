@@ -132,10 +132,11 @@ export default {
      */
     getPoints() {
       const task = this.task;
+		console.log('getPoints: project',this.task)
       const bottom = task.height - task.height / 4;
       const corner = task.height / 6;
       const smallCorner = task.height / 8;
-      return `M ${smallCorner},0
+		let return_data = `M ${smallCorner},0
                 L ${task.width - smallCorner} 0
                 L ${task.width} ${smallCorner}
                 L ${task.width} ${bottom}
@@ -145,8 +146,9 @@ export default {
                 L ${corner} ${task.height}
                 L 0 ${bottom}
                 L 0 ${smallCorner}
-                Z
-        `;
+                Z`
+     //console.log('return_data',return_data)
+		return return_data;
     },
 
     /**

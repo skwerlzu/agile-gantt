@@ -36,15 +36,15 @@
 	   <foreignObject
       class=""
     	style="overflow: visible"
-      :x="task.x + 10 "
-      :y="task.y - 1"
+      :x="task.x + 15 "
+      :y="task.y"
       :width="task.width > 300 ? task.width : 300"
-      :height="26"
+      :height="(task.height - (task.height / 10))"
 				 
     >
 	<div class="gantt-test">  
 			
-		<span v-for="user in task.user" :key="task.id+'chart-avatar'"><UserAvatar   style="display: inline" :tile="true"  :user_data="user" :show_menu="false" :params="{size: 20, badge: false}" /></span>
+		<span v-for="user in task.user"  :key="task.id+'chart-avatar'"><UserAvatar   style="display: inline"   :user_data="user" :show_menu="false" :params="{size: task.height, badge: false}" /></span>
 			<span style="max-width: 150px"><v-chip
       class="text-truncate"
       dark
@@ -53,7 +53,7 @@
     border: solid 1px;"
 						  small
     >
-    
+      
       {{task.label}}
     </v-chip></span> 
 		</div>
@@ -141,7 +141,10 @@ export default {
      */
     getPoints() {
       const task = this.task;
-      return `0,0 ${task.width},0 ${task.width},${task.height} 0,${task.height}`;
+		console.log('getPoints: task',task)
+		let return_data = `0,0 ${task.width},0 ${task.width},${task.height} 0,${task.height}`
+		//console.log('return_data',return_data)
+      return return_data;
     }
   }
 };

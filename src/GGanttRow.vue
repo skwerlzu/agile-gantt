@@ -123,15 +123,16 @@ export default {
 	  inRange(bar){
 		  let chartStart = this.getChartStart()
 		  let chartEnd = this.getChartEnd()
-		  console.log({
+		 /* console.log({
 			  bar: bar,
 			  chartStart: this.getChartStart(),
 			  chartEnd: this.getChartEnd(),
 			  barStart: bar[this.barStart],
 			  barEnd: bar[this.barEnd]
 		  })
+		  */
 		  let good = (moment(bar[this.barStart]).isBetween(chartStart, chartEnd) || moment(bar[this.barEnd]).isBetween(chartStart, chartEnd))
-		  console.log('good',good)
+		  //console.log('good',good)
 		return good
 	  },
 	  format(data){

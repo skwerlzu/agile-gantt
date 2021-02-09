@@ -23,7 +23,7 @@
         :style="{ ...root.style['grid-line-horizontal'] }"
         v-for="line in horizontalLines"
         :key="line.key"
-        :x1="line.x1"
+        :x1="line.x1 ? line.x1 : 1"
         :y1="line.y1"
         :x2="line.x2"
         :y2="line.y2"
@@ -33,7 +33,7 @@
         :style="{ ...root.style['grid-line-vertical'] }"
         v-for="line in verticalLines"
         :key="line.key"
-        :x1="line.x1"
+        :x1="line.x1 ? line.x1 : 1"
         :y1="line.y1"
         :x2="line.x2"
         :y2="line.y2"
@@ -41,10 +41,10 @@
       <line
         class="agile-gantt__grid-line-time"
         :style="{ ...root.style['grid-line-time'] }"
-        :x1="timeLinePosition.x"
-        :y1="timeLinePosition.y1"
-        :x2="timeLinePosition.x"
-        :y2="timeLinePosition.y2"
+        :x1="timeLinePosition.x ? timeLinePosition.x : 1"
+        :y1="timeLinePosition.y1 ? timeLinePosition.y1 : 1"
+        :x2="timeLinePosition.x ? timeLinePosition.x : 1"
+        :y2="timeLinePosition.y2 ? timeLinePosition.y2 : 1"
       ></line>
     </g>
   </svg>

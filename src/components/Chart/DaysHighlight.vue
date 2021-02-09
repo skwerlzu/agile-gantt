@@ -14,6 +14,7 @@
     v-if="showWorkingDays"
   >
     <rect
+		  v-if="day.width.px"
       class="agile-gantt__chart-days-highlight-rect"
       v-for="day in workingDays"
       :key="getKey(day)"
