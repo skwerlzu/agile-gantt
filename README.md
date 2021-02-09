@@ -1,3 +1,8 @@
+```bash
+# Additional typescript definitions
+"agile-gantt": "git+https://github.com/skwerlzu/agile-gantt.git" 
+```
+
 <h1>Gantt-elastic - Javascript Gantt Chart (editable, responsive)</h1>
 <h2>Javascript Gantt Chart for vue, jquery, vanilla js and other frameworks</h2>
 
@@ -9,6 +14,8 @@
 ![preview img](https://github.com/neuronetio/gantt-elastic/raw/master/gantt-elastic.jpg)
 ![preview gif](https://github.com/neuronetio/gantt-elastic/raw/master/gantt-elastic.gif)
 ![preview gif](https://github.com/neuronetio/gantt-elastic/raw/master/grab-scroll.gif)
+
+
 
 ## Gantt-elastic
 
